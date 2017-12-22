@@ -20,6 +20,7 @@ ShoppingList.create('peppers', 4);
 
 // adding some recipes to `Recipes` so there's something
 // to retrieve.
+// .create is a schema method
 Recipes.create(
   'boiled white rice', ['1 cup white rice', '2 cups water', 'pinch of salt']);
 Recipes.create(
@@ -30,7 +31,7 @@ Recipes.create(
 app.get('/shopping-list', (req, res) => {
   res.json(ShoppingList.get());
 });
-
+// .post is a http method
 app.post('/shopping-list', jsonParser, (req, res) => {
   // ensure `name` and `budget` are in request body
   const requiredFields = ['name', 'budget'];
@@ -46,6 +47,12 @@ app.post('/shopping-list', jsonParser, (req, res) => {
   const item = ShoppingList.create(req.body.name, req.body.budget);
   res.status(201).json(item);
 });
+app.delete('/recipes/:id', (req, res) => {
+  Recipes.delete(req.params.id);
+  console.log(`Deleted recipes item \`${req.params.id}\``);
+  res.status(204).end();
+});
+
 
 app.delete('/shopping-list/:id', (req, res) => {
   ShoppingList.delete(req.params.id);
